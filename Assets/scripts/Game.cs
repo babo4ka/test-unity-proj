@@ -38,7 +38,6 @@ public class Game : MonoBehaviour
 
     private void checkRight(int num)
     {
-        Debug.Log("num " + num);
         if(right == num)
         {
             score++;
@@ -71,7 +70,7 @@ public class Game : MonoBehaviour
         Color[] colors = generateColors();
 
         right = random.Next(0, 3);
-        Debug.Log("right " + right);
+        
         for (int i = 0; i < cubes.Length; i++)
         {
             cubes[i].GetComponent<SpriteRenderer>().color = i == right ? colors[1] : colors[0];

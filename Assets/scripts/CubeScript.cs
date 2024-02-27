@@ -11,6 +11,9 @@ public class CubeScript : MonoBehaviour
 
     public CheckRight check;
 
+    public delegate void Clicked();
+    public Clicked clicked;
+
     public void setCubeNum(int num)
     {
         cubeNum = num;
@@ -19,5 +22,6 @@ public class CubeScript : MonoBehaviour
     public void OnMouseUp()
     {
         check?.Invoke(cubeNum);
+        clicked?.Invoke();
     }
 }
