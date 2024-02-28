@@ -18,7 +18,9 @@ public class TimeCounter : MonoBehaviour
     private TMP_Text self;
 
     [SerializeField]
-    private GameObject[] cubes;
+    private GameObject[] fourCubes;
+    [SerializeField]
+    private GameObject[] nineCubes;
 
     private float highestTime = 0.0f;
     private float averageTime = 0.0f;
@@ -28,9 +30,14 @@ public class TimeCounter : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < cubes.Length; i++)
+        for (int i = 0; i < fourCubes.Length; i++)
         {
-            cubes[i].GetComponent<CubeScript>().clicked += CubeClicked;
+            fourCubes[i].GetComponent<CubeScript>().clicked += CubeClicked;
+        }
+
+        for (int i = 0; i < nineCubes.Length; i++)
+        {
+            nineCubes[i].GetComponent<CubeScript>().clicked += CubeClicked;
         }
     }
 

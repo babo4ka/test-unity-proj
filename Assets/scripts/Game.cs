@@ -9,7 +9,9 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 {
     [SerializeField]
-    private GameObject [] cubes;
+    private GameObject [] fourCubes;
+    [SerializeField]
+    private GameObject[] nineCubes;
 
     private int right;
 
@@ -24,23 +26,50 @@ public class Game : MonoBehaviour
     [SerializeField]
     private TMP_Text bestText;
 
+    private enum CubesCount
+    {
+        FOUR, NINE
+    }
+
+    private CubesCount cubesCount = CubesCount.FOUR;
+
+    [SerializeField]
+    private GameObject fourSquaresWrapper;
+    [SerializeField]
+    private GameObject nineSquaresWrapper;
 
 
     private void Start()
     {
-        SetColors();
+        SetColors(cubesCount);
         UpdateScore();
-        for(int i=0; i<cubes.Length; i++)
+        for(int i=0; i< fourCubes.Length; i++)
         {
-            cubes[i].GetComponent<CubeScript>().check += checkRight;
+            fourCubes[i].GetComponent<CubeScript>().check += checkRight;
+            fourCubes[i].GetComponent<CubeScript>().setCubeNum(i);
+        }
+
+        for(int i=0; i< nineCubes.Length; i++)
+        {
+            nineCubes[i].GetComponent<CubeScript>().check += checkRight;
+            nineCubes[i].GetComponent<CubeScript>().setCubeNum(i);
         }
     }
+
 
     private void checkRight(int num)
     {
         if(right == num)
         {
             score++;
+
+            if(score > 4)
+            {
+                cubesCount = CubesCount.NINE;
+
+                fourSquaresWrapper.SetActive(false);
+                nineSquaresWrapper.SetActive(true);
+            }
         }
         else
         {
@@ -49,9 +78,13 @@ public class Game : MonoBehaviour
                 UpdateBest();
             }
             score = 0;
+            cubesCount = CubesCount.FOUR;
+
+            fourSquaresWrapper.SetActive(true);
+            nineSquaresWrapper.SetActive(false);
         }
 
-        SetColors();
+        SetColors(cubesCount);
         UpdateScore();
     }
 
@@ -65,16 +98,31 @@ public class Game : MonoBehaviour
         bestText.text = "best: " + best.ToString();
     }
 
-    private void SetColors()
+ 
+
+    private void SetColors(CubesCount cc)
     {
         Color[] colors = generateColors();
 
-        right = random.Next(0, 3);
         
-        for (int i = 0; i < cubes.Length; i++)
+
+        switch (cc)
         {
-            cubes[i].GetComponent<SpriteRenderer>().color = i == right ? colors[1] : colors[0];
-            cubes[i].GetComponent<CubeScript>().setCubeNum(i);
+            case CubesCount.FOUR:
+                right = random.Next(0, 3);
+                for (int i = 0; i < fourCubes.Length; i++)
+                {
+                    fourCubes[i].GetComponent<SpriteRenderer>().color = i == right ? colors[1] : colors[0];
+                }
+            break;
+
+            case CubesCount.NINE:
+                right = random.Next(0, 8);
+                for (int i = 0; i < nineCubes.Length; i++)
+                {
+                    nineCubes[i].GetComponent<SpriteRenderer>().color = i == right ? colors[1] : colors[0];
+                }
+            break;
         }
     }
 
